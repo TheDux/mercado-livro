@@ -4,6 +4,8 @@ import com.mercadolivro.entities.BookEntity
 import com.mercadolivro.entities.CustomerEntity
 import com.mercadolivro.enum.BookStatus
 import com.mercadolivro.repository.BookRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,12 +16,12 @@ class BookService(
         bookRepository.save(book)
     }
 
-    fun buscarTodosLivros(): List<BookEntity> {
-        return bookRepository.findAll().toList()
+    fun buscarTodosLivros(pageable: Pageable): Page<BookEntity> {
+        return bookRepository.findAll(pageable)
     }
 
-    fun buscarLivrosAtivos(): List<BookEntity> {
-        return bookRepository.findByStatus(BookStatus.ATIVO)
+    fun buscarLivrosAtivos(pageable: Pageable): Page<BookEntity> {
+        return bookRepository.findByStatus(BookStatus.ATIVO, pageable)
     }
 
     fun buscarLivroEspecifico(id: Int): BookEntity {
