@@ -25,7 +25,6 @@ class BookController(
     fun cadastrarLivro(
         @RequestBody request: PostBookRequest
     ){
-        //TODO ATUALIZAR PARA ACEITAR CRIAR LIVROS SEM CUSTOMER RELACIONADO
         val customer = customerService.buscarClienteEspecifico(request.customerId)
         bookService.cadastrarLivro(request.toBookEntity(customer))
     }
