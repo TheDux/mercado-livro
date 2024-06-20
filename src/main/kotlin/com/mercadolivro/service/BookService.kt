@@ -3,6 +3,8 @@ package com.mercadolivro.service
 import com.mercadolivro.entities.BookEntity
 import com.mercadolivro.entities.CustomerEntity
 import com.mercadolivro.enum.BookStatus
+import com.mercadolivro.enum.Errors
+import com.mercadolivro.exception.NotFoundException
 import com.mercadolivro.repository.BookRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -25,7 +27,12 @@ class BookService(
     }
 
     fun buscarLivroEspecifico(id: Int): BookEntity {
-        return bookRepository.findById(id).orElseThrow()
+        return bookRepository.findById(id)
+            .orElseThrow{
+                NotFoundException(
+                    Errors.ML0001.message.format(id),
+                    Errors.ML0001.code)
+            }
     }
 
     fun apagarLivro(id: Int) {

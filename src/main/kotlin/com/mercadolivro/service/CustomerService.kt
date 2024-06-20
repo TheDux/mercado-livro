@@ -2,6 +2,8 @@ package com.mercadolivro.service
 
 import com.mercadolivro.entities.CustomerEntity
 import com.mercadolivro.enum.CustomerStatus
+import com.mercadolivro.enum.Errors
+import com.mercadolivro.exception.NotFoundException
 import com.mercadolivro.repository.CustomerRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -22,7 +24,12 @@ class CustomerService(
 
     fun buscarClienteEspecifico(id: Int): CustomerEntity
     {
-        return customerRepository.findById(id).orElseThrow()
+        return customerRepository.findById(id)
+            .orElseThrow{
+                NotFoundException(
+                    Errors.ML0002.message.format(id),
+                    Errors.ML0002.code)
+            }
     }
 
     fun cadastrarCliente(customerRequest: CustomerEntity){
