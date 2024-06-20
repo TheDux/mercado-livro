@@ -3,8 +3,9 @@ package com.mercadolivro.controller
 import com.mercadolivro.service.BookService
 import com.mercadolivro.controller.request.PostBookRequest
 import com.mercadolivro.controller.request.PutBookRequest
-import com.mercadolivro.entities.BookEntity
+import com.mercadolivro.controller.response.BookResponse
 import com.mercadolivro.extension.toBookEntity
+import com.mercadolivro.extension.toResponse
 import com.mercadolivro.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -28,21 +29,21 @@ class BookController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun buscarTodosLivros(): List<BookEntity> {
-        return bookService.buscarTodosLivros()
+    fun buscarTodosLivros(): List<BookResponse> {
+        return bookService.buscarTodosLivros().map{ it.toResponse() }
     }
 
     @GetMapping("/actives")
     @ResponseStatus(HttpStatus.OK)
-    fun buscarLivrosAtivos(): List<BookEntity> {
-        return bookService.buscarLivrosAtivos()
+    fun buscarLivrosAtivos(): List<BookResponse> {
+        return bookService.buscarLivrosAtivos().map { it.toResponse() }
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun buscarLivroEspecifico(
-        @PathVariable id: Int): BookEntity{
-        return bookService.buscarLivroEspecifico(id)
+        @PathVariable id: Int): BookResponse{
+        return bookService.buscarLivroEspecifico(id).toResponse()
     }
 
     @DeleteMapping("/{id}")

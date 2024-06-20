@@ -3,8 +3,9 @@ package com.mercadolivro.controller
 import com.mercadolivro.service.CustomerService
 import com.mercadolivro.controller.request.PostCustomerRequest
 import com.mercadolivro.controller.request.PutCustomerRequest
-import com.mercadolivro.entities.CustomerEntity
+import com.mercadolivro.controller.response.CustomerResponse
 import com.mercadolivro.extension.toCustomerEntity
+import com.mercadolivro.extension.toResponse
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -13,24 +14,21 @@ import org.springframework.web.bind.annotation.*
 class CustomerController
     (val customerService: CustomerService){
 
-//    @Autowired
-//    val customerService: CustomerService
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun buscarTodosClientes(
         @RequestParam name: String?
-    ): List<CustomerEntity> {
-        return customerService.buscarTodosClientes(name)
+    ): List<CustomerResponse> {
+        return customerService.buscarTodosClientes(name).map { it.toResponse() }
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun buscaClienteEspecifico(
         @PathVariable(required = false) id: Int
-    ): CustomerEntity
+    ): CustomerResponse
     {
-        return customerService.buscarClienteEspecifico(id)
+        return customerService.buscarClienteEspecifico(id).toResponse()
     }
 
     @PostMapping
