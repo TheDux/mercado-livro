@@ -6,6 +6,7 @@ import com.mercadolivro.controller.request.PutCustomerRequest
 import com.mercadolivro.controller.response.CustomerResponse
 import com.mercadolivro.extension.toCustomerEntity
 import com.mercadolivro.extension.toResponse
+import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -38,7 +39,7 @@ class CustomerController
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun cadastrarCliente(
-        @RequestBody customerRequest:PostCustomerRequest
+        @RequestBody @Valid customerRequest:PostCustomerRequest
     ){
         customerService.cadastrarCliente(customerRequest.toCustomerEntity())
     }
@@ -47,7 +48,7 @@ class CustomerController
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun atualizarCliente(
         @PathVariable id: Int,
-        @RequestBody customerRequest: PutCustomerRequest
+        @RequestBody @Valid customerRequest: PutCustomerRequest
     )
     {
         val customerSaved = customerService.buscarClienteEspecifico(id)

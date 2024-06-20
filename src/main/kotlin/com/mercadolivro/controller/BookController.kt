@@ -7,6 +7,7 @@ import com.mercadolivro.controller.response.BookResponse
 import com.mercadolivro.extension.toBookEntity
 import com.mercadolivro.extension.toResponse
 import com.mercadolivro.service.CustomerService
+import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -23,7 +24,7 @@ class BookController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun cadastrarLivro(
-        @RequestBody request: PostBookRequest
+        @RequestBody @Valid request: PostBookRequest
     ){
         val customer = customerService.buscarClienteEspecifico(request.customerId)
         bookService.cadastrarLivro(request.toBookEntity(customer))
@@ -62,7 +63,8 @@ class BookController(
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun atualizarLivro(
-        @PathVariable id: Int, @RequestBody book: PutBookRequest
+        @PathVariable id: Int,
+        @RequestBody book: PutBookRequest
     ){
         val bookSaved = bookService.buscarLivroEspecifico(id)
         bookService.atualizarLivro(book.toBookEntity(bookSaved))
